@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#202126">
+  <title>Blender 2D Animator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="2D Animator home"><span class="brand-mark">B</span><span>BLENDER <small>2D ANIMATOR</small></span></a>
+    <div class="project-name"><span class="status-dot"></span><input id="projectName" value="Untitled Animation" aria-label="Project name"></div>
+    <div class="top-actions"><button id="newProject" title="New project">＋ New</button><button id="saveProject" class="primary">Save project</button><button id="loadProject">Open</button><button id="exportPng">Export PNG</button><button id="exportJson">Export project</button><input id="fileOpen" type="file" accept=".json,application/json" hidden></div>
+  </header>
+  <main class="app">
+    <aside class="tool-rail panel">
+      <div class="panel-heading">TOOLS <span>DRAW</span></div>
+      <button class="tool active" data-tool="pencil" title="Pencil (P)">✎<small>Pencil</small></button>
+      <button class="tool" data-tool="eraser" title="Eraser (E)">◩<small>Eraser</small></button>
+      <button class="tool" data-tool="line" title="Line (L)">／<small>Line</small></button>
+      <button class="tool" data-tool="rect" title="Rectangle (R)">▱<small>Rect</small></button>
+      <button class="tool" data-tool="ellipse" title="Ellipse (O)">◯<small>Ellipse</small></button>
+      <button class="tool" data-tool="select" title="Select (V)">⌖<small>Select</small></button>
+      <div class="rail-spacer"></div><button id="undo" class="tool" title="Undo (Ctrl+Z)">↶<small>Undo</small></button>
+      <button id="clearFrame" class="tool" title="Clear current frame">⌫<small>Clear</small></button>
+    </aside>
+    <section class="center">
+      <div class="workspace-bar panel"><div class="mode-tabs"><button class="mode active">Draw</button><button class="mode" id="editMode">Edit</button><button class="mode" id="objectMode">Object</button></div><div class="workspace-info"><span id="frameReadout">Frame 1</span><span class="separator">•</span><span id="zoomReadout">100%</span></div><div class="workspace-actions"><button id="zoomOut" title="Zoom out">−</button><button id="zoomReset">Fit</button><button id="zoomIn" title="Zoom in">＋</button><button id="toggleGrid" class="active">Grid</button></div></div>
+      <div class="canvas-wrap" id="canvasWrap"><div class="canvas-board"><canvas id="onionCanvas"></canvas><canvas id="artCanvas" aria-label="Animation drawing canvas"></canvas><div class="canvas-hint" id="canvasHint">Start drawing · Pencil (P) · Play with Space</div></div></div>
+      <section class="timeline panel">
+        <div class="timeline-head"><div class="timeline-title">DOPE SHEET <span id="timelineCount">24 frames</span></div><div class="timeline-controls"><button id="addFrame">＋ Frame</button><button id="duplicateFrame">Duplicate</button><button id="deleteFrame">Delete</button><span class="separator">│</span><label>FPS <input id="fps" type="number" min="1" max="60" value="12"></label><button id="play" class="play-button">▶ Play</button></div></div>
+        <div class="timeline-body"><div class="layer-labels" id="layerLabels"><div class="layer-label-head">LAYERS <button id="addLayer" title="Add layer">＋</button></div></div><div class="frames-scroll" id="framesScroll"><div class="frame-ruler" id="frameRuler"></div><div id="tracks"></div></div></div>
+        <div class="timeline-foot"><span>← → Frame navigation</span><span>Click a cell to select · Double-click to add keyframe</span><span id="playState">READY</span></div>
+      </section>
+    </section>
+    <aside class="properties panel">
+      <div class="panel-heading">PROPERTIES <span id="activeToolName">PENCIL</span></div>
+      <section class="prop-section"><h3>Brush</h3><label class="prop-label">Color</label><div class="color-row"><input type="color" id="brushColor" value="#f3f4f6"><input id="colorHex" value="#f3f4f6" maxlength="7" aria-label="Hex color"></div><label class="prop-label">Size <output id="sizeOut">4 px</output></label><input id="brushSize" type="range" min="1" max="40" value="4"><label class="prop-label">Opacity <output id="opacityOut">100%</output></label><input id="brushOpacity" type="range" min="10" max="100" value="100"></section>
+      <section class="prop-section"><h3>Animation</h3><label class="check-row"><input id="onionToggle" type="checkbox" checked> Onion skin</label><label class="prop-label">Previous frames <output id="prevOut">1</output></label><input id="prevFrames" type="range" min="0" max="3" value="1"><label class="prop-label">Next frames <output id="nextOut">1</output></label><input id="nextFrames" type="range" min="0" max="3" value="1"><label class="check-row"><input id="loopToggle" type="checkbox" checked> Loop playback</label></section>
+      <section class="prop-section"><h3>Canvas</h3><label class="prop-label">Background</label><div class="color-row"><input type="color" id="bgColor" value="#f7f7f7"><span class="muted">Canvas color</span></div><label class="prop-label">Width</label><input class="number-field" id="canvasWidth" type="number" min="128" max="4096" value="960"><label class="prop-label">Height</label><input class="number-field" id="canvasHeight" type="number" min="128" max="4096" value="540"><button id="applyCanvas" class="wide-button">Apply canvas size</button></section>
+      <section class="prop-section layer-properties"><h3>Active Layer</h3><input id="layerName" class="text-field" value="Layer 1" aria-label="Layer name"><label class="prop-label">Opacity <output id="layerOpacityOut">100%</output></label><input id="layerOpacity" type="range" min="0" max="100" value="100"><label class="check-row"><input id="layerVisible" type="checkbox" checked> Visible</label></section>
+      <div class="properties-footer">BLENDER-INSPIRED WORKSPACE <span>2D • FRAME BY FRAME</span></div>
+    </aside>
+  </main>
+  <script src="js/app.js"></script>
+</body>
+</html>

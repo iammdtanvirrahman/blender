@@ -34,6 +34,11 @@
   function setMode(mode){state.mode=mode;state.selectedStroke=-1;state.selectedPoint=-1;if(mode==="draw"&&state.tool==="select")state.tool="pencil";if(mode!=="draw")state.tool="select";art.style.cursor=mode==="draw"?"crosshair":"move";updateUI();}
   document.querySelectorAll(".tool[data-tool]").forEach(b=>b.addEventListener("click",()=>setTool(b.dataset.tool)));
   document.querySelectorAll(".mode").forEach(b=>b.dataset.mode=b.id==="editMode"?"edit":b.id==="objectMode"?"object":"draw");$("editMode").onclick=()=>setMode("edit");$("objectMode").onclick=()=>setMode("object");document.querySelector(".mode:not(#editMode):not(#objectMode)").onclick=()=>setMode("draw");
+  function transformSelected(kind){const stroke=selectedStroke();if(!stroke||!stroke.points||!stroke.points.length)return;snapshot();const pts=stroke.points;const cx=pts.reduce((sum,p)=>sum+p.x,0)/pts.length,cy=pts.reduce((sum,p)=>sum+p.y,0)/pts.length;if(kind==="flipH")pts.forEach(p=>p.x=2*cx-p.x);else if(kind==="flipV")pts.forEach(p=>p.y=2*cy-p.y);else{const angle=(kind==="left"?-1:1)*Math.PI/12,c=Math.cos(angle),sn=Math.sin(angle);pts.forEach(p=>{const x=p.x-cx,y=p.y-cy;p.x=cx+x*c-y*sn;p.y=cy+x*sn+y*c;});}renderAll();}
+  $("flipHorizontal").onclick=()=>transformSelected("flipH");
+  $("flipVertical").onclick=()=>transformSelected("flipV");
+  $("rotateLeft").onclick=()=>transformSelected("left");
+  $("rotateRight").onclick=()=>transformSelected("right");
   ["selectedColor","selectedColorHex","selectedSize","selectedOpacity"].forEach(id=>$(id).addEventListener("focus",()=>{if(selectedStroke())snapshot();}));
   $("selectedColor").oninput=e=>{const stroke=selectedStroke();if(!stroke)return;stroke.color=e.target.value;$("selectedColorHex").value=e.target.value;renderAll();};
   $("selectedColorHex").onchange=e=>{if(/^#[0-9a-f]{6}$/i.test(e.target.value)){const stroke=selectedStroke();if(stroke){stroke.color=e.target.value;$("selectedColor").value=e.target.value;renderAll();}}else syncSelectionStyle();};

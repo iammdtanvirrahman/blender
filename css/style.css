@@ -3,3 +3,6 @@
 /* Timeline keyframe states */
 .frame-cell.empty-key:after{width:7px;height:7px;border-radius:1px;background:#747887;transform:translate(-50%,-50%) rotate(0deg)}
 .frame-cell.empty-key.current:after{background:#ff9c68}
+
+/* Object/Edit selection controls */
+.selection-tools h3{display:flex;justify-content:space-between;align-items:center}.selection-tools h3 span{font-size:9px;letter-spacing:1px;color:var(--accent)}.selection-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.selection-actions button{font-size:11px}.danger-button{border-color:#743d3d;color:#ffaaaa;background:#3a2528}.danger-button:hover{background:#5b3035}.selection-tools .muted{line-height:1.5;margin:0 0 10px}

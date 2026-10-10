@@ -34,9 +34,8 @@
   function setMode(mode){state.mode=mode;state.selectedStroke=-1;state.selectedPoint=-1;if(mode==="draw"&&state.tool==="select")state.tool="pencil";if(mode!=="draw")state.tool="select";art.style.cursor=mode==="draw"?"crosshair":"move";updateUI();}
   document.querySelectorAll(".tool[data-tool]").forEach(b=>b.addEventListener("click",()=>setTool(b.dataset.tool)));
   document.querySelectorAll(".mode").forEach(b=>b.dataset.mode=b.id==="editMode"?"edit":b.id==="objectMode"?"object":"draw");$("editMode").onclick=()=>setMode("edit");$("objectMode").onclick=()=>setMode("object");document.querySelector(".mode:not(#editMode):not(#objectMode)").onclick=()=>setMode("draw");
-  function changeSelectedStyle(key,value){const stroke=selectedStroke();if(!stroke)return;snapshot();stroke[key]=value;renderAll();}
+  ["selectedColor","selectedColorHex","selectedSize","selectedOpacity"].forEach(id=>$(id).addEventListener("focus",()=>{if(selectedStroke())snapshot();}));
   $("selectedColor").oninput=e=>{const stroke=selectedStroke();if(!stroke)return;stroke.color=e.target.value;$("selectedColorHex").value=e.target.value;renderAll();};
-  $("selectedColor").onchange=()=>{if(selectedStroke())snapshotStyleBeforeChange();};
   $("selectedColorHex").onchange=e=>{if(/^#[0-9a-f]{6}$/i.test(e.target.value)){const stroke=selectedStroke();if(stroke){stroke.color=e.target.value;$("selectedColor").value=e.target.value;renderAll();}}else syncSelectionStyle();};
   $("selectedSize").oninput=e=>{const stroke=selectedStroke();if(!stroke)return;stroke.size=Number(e.target.value);$("selectedSizeOut").textContent=stroke.size+" px";renderAll();};
   $("selectedOpacity").oninput=e=>{const stroke=selectedStroke();if(!stroke)return;stroke.opacity=Number(e.target.value)/100;$("selectedOpacityOut").textContent=e.target.value+"%";renderAll();};

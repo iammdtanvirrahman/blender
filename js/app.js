@@ -46,6 +46,9 @@
   $("selectedOpacity").oninput=e=>{const stroke=selectedStroke();if(!stroke)return;stroke.opacity=Number(e.target.value)/100;$("selectedOpacityOut").textContent=e.target.value+"%";renderAll();};
   $("duplicateSelection").onclick=()=>{const list=frameData(currentLayer(),state.frame);if(state.selectedStroke<0||!list[state.selectedStroke])return; snapshot();const copy=clone(list[state.selectedStroke]);copy.points=copy.points.map(p=>({x:p.x+12,y:p.y+12}));list.splice(state.selectedStroke+1,0,copy);state.selectedStroke++;renderAll();};
   $("deleteSelection").onclick=()=>{const list=frameData(currentLayer(),state.frame);if(state.selectedStroke<0||!list[state.selectedStroke])return; snapshot();list.splice(state.selectedStroke,1);state.selectedStroke=-1;state.selectedPoint=-1;renderAll();};
+  function moveSelectionInStack(direction){const list=frameData(currentLayer(),state.frame),i=state.selectedStroke,j=i+direction;if(i<0||i>=list.length||j<0||j>=list.length)return;snapshot();const item=list.splice(i,1)[0];list.splice(j,0,item);state.selectedStroke=j;renderAll();}
+  $("sendBackward").onclick=()=>moveSelectionInStack(-1);
+  $("bringForward").onclick=()=>moveSelectionInStack(1);
   $("deletePoint").onclick=()=>{const list=frameData(currentLayer(),state.frame),stroke=list[state.selectedStroke];if(state.mode!=="edit"||!stroke||state.selectedPoint<0)return;if(stroke.points.length<=2){alert("A stroke needs at least two points. Delete the whole stroke instead.");return;}snapshot();stroke.points.splice(state.selectedPoint,1);state.selectedPoint=-1;renderAll();};
   $("undo").onclick=undo;$("redo").onclick=redo;$("clearFrame").onclick=()=>{snapshot();currentLayer().frames[state.frame]=[];renderAll();};
   $("addFrame").onclick=()=>{snapshot();state.frameCount++;ensureFrames();selectFrame(state.frameCount-1);$("framesScroll").scrollLeft=$("framesScroll").scrollWidth;};

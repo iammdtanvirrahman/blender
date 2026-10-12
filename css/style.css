@@ -6,3 +6,69 @@
 
 /* Object/Edit selection controls */
 .selection-tools h3{display:flex;justify-content:space-between;align-items:center}.selection-tools h3 span{font-size:9px;letter-spacing:1px;color:var(--accent)}.selection-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.selection-actions button{font-size:11px}.danger-button{border-color:#743d3d;color:#ffaaaa;background:#3a2528}.danger-button:hover{background:#5b3035}.selection-tools .muted{line-height:1.5;margin:0 0 10px}
+
+
+/* Premium motion polish — visual-only; existing controls and behavior stay untouched */
+:root{
+  --motion-fast:140ms;
+  --motion-base:220ms;
+  --motion-slow:360ms;
+  --motion-ease:cubic-bezier(.2,.75,.25,1);
+}
+button{
+  transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,
+    color var(--motion-fast) ease,box-shadow var(--motion-base) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease);
+  -webkit-tap-highlight-color:transparent;
+}
+button:hover{box-shadow:0 3px 12px #0002}
+button:active{transform:translateY(1px) scale(.985);box-shadow:none}
+button:focus-visible,input:focus-visible{
+  outline:2px solid color-mix(in srgb,var(--accent) 78%,white);
+  outline-offset:2px;
+}
+.panel{
+  transition:border-color var(--motion-base) ease,box-shadow var(--motion-base) var(--motion-ease);
+}
+.tool{transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,
+  color var(--motion-fast) ease,transform var(--motion-base) var(--motion-ease),box-shadow var(--motion-base) ease}
+.tool:hover{transform:translateY(-1px)}
+.tool.active{box-shadow:inset 2px 0 0 var(--accent),0 2px 10px #0002}
+.mode-tabs button{transition:background-color var(--motion-base) ease,color var(--motion-base) ease,
+  transform var(--motion-fast) var(--motion-ease),box-shadow var(--motion-base) ease}
+.mode-tabs button:hover{transform:translateY(-1px)}
+.mode-tabs button.active{box-shadow:inset 0 -2px 0 var(--accent)}
+.topbar,.workspace-bar,.timeline,.properties,.tool-rail{
+  animation:ui-enter var(--motion-slow) var(--motion-ease) both;
+}
+.center{animation:workspace-enter 420ms var(--motion-ease) both}
+.properties{animation-delay:45ms}
+.timeline{animation-delay:25ms}
+@keyframes ui-enter{
+  from{opacity:0;transform:translateY(7px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes workspace-enter{
+  from{opacity:.65;transform:translateY(5px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.frame-cell,.frame-number,.layer-row{
+  transition:background-color var(--motion-fast) ease,color var(--motion-fast) ease;
+}
+.frame-cell.keyed:after{
+  transition:background-color var(--motion-fast) ease,box-shadow var(--motion-fast) ease;
+}
+.frame-cell.keyed:hover:after{box-shadow:0 0 0 3px #f5793525}
+input[type=range]{cursor:pointer}
+input[type=range]::-webkit-slider-thumb{transition:box-shadow var(--motion-fast) ease}
+input[type=range]:hover::-webkit-slider-thumb{box-shadow:0 0 0 5px #f5793522}
+.canvas-board{transition:box-shadow var(--motion-slow) var(--motion-ease)}
+.canvas-wrap:focus-within .canvas-board{box-shadow:0 18px 60px #0009}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+}
